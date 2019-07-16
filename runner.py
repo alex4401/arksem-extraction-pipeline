@@ -1,8 +1,9 @@
-# $this.py EXTRACTED_PAK_FILES REGEX OUTPUT_DIR
+# $this.py EXTRACTED_PAK_FILES REGEX OUTPUT_DIR SHOULD_CLEAN_UP
 import sys, os, re, subprocess
 
 basePath = sys.argv[1]
 file_test = re.compile(sys.argv[2])
+cleanupjson = re.compile(sys.argv[4]) == "true"
 
 print("Search path:", basePath)
 print("Regex:", sys.argv[2])
@@ -54,7 +55,8 @@ for uasset_path in uassets:
         if not os.path.exists(final_dir):
             os.makedirs(final_dir)
         os.rename(json_path, final_json_path)
-        subprocess.Popen(['python', './json-cleanup.py', final_json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if cleanupjson:
+            subprocess.Popen(['python', './json-cleanup.py', final_json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     else:
         print("-")
         uassets[uasset_path].result = ERunResultType.FAIL
