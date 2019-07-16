@@ -8,8 +8,12 @@ download:
   artifacts:
     untracked: true
     paths:
-    - "*.bin"
+      - "*.bin"
   script:
+    - pip install -r requirements.txt
+    - cd thirdparty/googleplayapi
+    - python setup.py build
+    - cd ../..
     - python pull-blobs.py
 
 extract-main:
@@ -18,8 +22,8 @@ extract-main:
     - download
   artifacts:
     paths:
-    - "artifacts/*.txt"
-    - "artifacts/*.zip"
+      - "artifacts/*.txt"
+      - "artifacts/*.zip"
   script:
     - mkdir artifacts tmp
     - curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
