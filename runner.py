@@ -24,13 +24,15 @@ class SAssetFileData:
 uassets = {}
 
 print("Scanning for assets")
+scannedCount = 0
 for (dirpath, dirnames, filenames) in os.walk(basePath):
     for filename in filenames:
+        scannedCount = scannedCount + 1
         if file_test.match(filename):
             uassets[os.sep.join([dirpath, filename])] = SAssetFileData(dirpath, filename)
 
 amount = len(uassets.keys())
-print("Found", amount, "applicable items.")
+print("Scanned", scannedCount, "and found", amount, "applicable items.")
 
 print("Extracting data from detected assets")
 current = 0
