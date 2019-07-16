@@ -13,7 +13,7 @@ before_script:
   - curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
 
 extract-main:
-  stage: prepare
+  stage: extract
   artifacts:
     paths:
       - "artifacts/*.txt"
