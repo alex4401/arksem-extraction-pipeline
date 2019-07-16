@@ -12,7 +12,7 @@ if not 'gsfDeviceId' in os.environ and not 'deviceCodename' in os.environ and no
 
 gapi = GooglePlayAPI(locale="en_US", timezone="UTC", device_codename=os.environ['deviceCodename'])
 gapi.login(gsfId=int(os.environ['gsfDeviceId']), authSubToken=os.environ['authSubToken'])
-download_result = gapi.delivery('com.studiowildcard.wardrumstudios.ark', expansion_files = True)
+download_result = gapi.download('com.studiowildcard.wardrumstudios.ark', expansion_files = True)
 for data_info in download_result['additionalData']:
     print(data_info["type"], data_info["versionCode"])
     if data_info["type"] != arg_blobType:
