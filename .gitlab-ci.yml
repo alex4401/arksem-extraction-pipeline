@@ -1,7 +1,7 @@
 image: registry.gitlab.com/alex4401/arkse-mobile-extraction
 
 download:
-  stage: prepare
+  stage: build
   artifacts:
     untracked: true
     paths:
