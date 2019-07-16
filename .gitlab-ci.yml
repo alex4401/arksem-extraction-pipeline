@@ -26,7 +26,7 @@ extract-main:
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -List > ../artifacts/chunk0-filelist.txt
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk0-filelist.txt
     - mkdir content
-    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -Extract $PWD/content
+    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -Extract $PWD/content > /dev/null
     - cd ..
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
@@ -45,7 +45,7 @@ extract-patch:
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -List > ../artifacts/chunk1-filelist.txt
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk1-filelist.txt
     - mkdir content
-    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -Extract $PWD/content
+    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -Extract $PWD/content > /dev/null
     - cd ..
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
     - python runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
