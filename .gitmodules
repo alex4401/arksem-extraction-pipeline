@@ -1,2 +1,4 @@
 [submodule "thirdparty/googleplayapi"]
 	url = https://github.com/NoMore201/googleplay-api.git
+[submodule "thirdparty/ue4build"]
+	url = https://gitlab.com/alex4401/upakbuild.git
