@@ -22,7 +22,7 @@ extract-main:
     - python pull-blobs.py main
     - cd tmp
     - unzip ../main.*.blob "ShooterGame/Content/Paks/pakchunk0-Android.pak"
-    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -List > ../artifacts/chunk0-filelist.txt
+    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Staging.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -List > ../artifacts/chunk0-filelist.txt
 
 extract-patch:
   stage: extract
@@ -34,4 +34,4 @@ extract-patch:
     - python pull-blobs.py patch
     - cd tmp
     - unzip ../patch.*.blob "ShooterGame/Content/Paks/pakchunk1-Android.pak"
-    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -List > ../artifacts/chunk1-filelist.txt
+    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Staging.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -List > ../artifacts/chunk1-filelist.txt
