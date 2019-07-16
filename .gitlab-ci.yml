@@ -1,7 +1,10 @@
 image: registry.gitlab.com/alex4401/arkse-mobile-extraction
+stages:
+  - prepare
+  - extract
 
 download:
-  stage: build
+  stage: prepare
   artifacts:
     untracked: true
     paths:
@@ -10,7 +13,7 @@ download:
     - python pull-blobs.py
 
 extract-main:
-  stage: build
+  stage: extract
   dependencies: 
     - download
   artifacts:
