@@ -1,0 +1,34 @@
+image: registry.gitlab.com/alex4401/arkse-mobile-extraction
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+stages:
+  - prepare
+  - extract
+
+download:
+  stage: prepare
+  artifacts:
+    untracked: true
+    paths:
+      - "*.bin"
+  script:
+    - pip install -r requirements.txt
+    - cd thirdparty/googleplayapi
+    - python setup.py build
+    - cd ../..
+    - python pull-blobs.py
+
+extract-main:
+  stage: extract
+  dependencies: 
+    - download
+  artifacts:
+    paths:
+      - "artifacts/*.txt"
+      - "artifacts/*.zip"
+  script:
+    - mkdir artifacts tmp
+    - curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
+    - cd tmp
+    - unzip ../main.124.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak"
+    - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -List > ../artifacts/chunk0-filelist.txt
