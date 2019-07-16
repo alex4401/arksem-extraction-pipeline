@@ -23,6 +23,9 @@ extract-main:
     - cd tmp
     - unzip ../main.*.blob "ShooterGame/Content/Paks/pakchunk0-Android.pak"
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -List > ../artifacts/chunk0-filelist.txt
+    - sed -i 's/^.*\(LogPakFile.*" \).*$/\1/' ../artifacts/chunk0-filelist.txt
+    - sed -i 's/LogPakFile: Display: //g' ../artifacts/chunk0-filelist.txt
+    - sed -i 's/"//g' ../artifacts/chunk0-filelist.txt
 
 extract-patch:
   stage: extract
@@ -35,3 +38,6 @@ extract-patch:
     - cd tmp
     - unzip ../patch.*.blob "ShooterGame/Content/Paks/pakchunk1-Android.pak"
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -List > ../artifacts/chunk1-filelist.txt
+    - sed -i 's/^.*\(LogPakFile.*" \).*$/\1/' ../artifacts/chunk1-filelist.txt
+    - sed -i 's/LogPakFile: Display: //g' ../artifacts/chunk1-filelist.txt
+    - sed -i 's/"//g' ../artifacts/chunk1-filelist.txt
