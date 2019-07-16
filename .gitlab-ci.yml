@@ -11,8 +11,9 @@ before_script:
   - cd ../..
   - mkdir artifacts tmp
   - curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
+  - chmod +x extractor
 
-extract-main:
+blob:main:
   stage: extract
   artifacts:
     paths:
@@ -31,7 +32,7 @@ extract-main:
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
 
-extract-patch:
+blob:patch:
   stage: extract
   artifacts:
     paths:
