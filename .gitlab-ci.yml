@@ -71,7 +71,7 @@ main chunk:
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -Extract $PWD/content > /dev/null
     - cd ..
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
-    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
+#    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
 
 patch chunk:
   <<: *chunk_job_definition
@@ -98,4 +98,4 @@ pages:
     - main chunk
     - patch chunk
   script:
-    - echo "To be implemented."
+    - echo "No generation yet." > public/index.html
