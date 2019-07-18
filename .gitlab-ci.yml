@@ -1,6 +1,7 @@
 image: registry.gitlab.com/alex4401/arkse-mobile-extraction
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/thirdparty/python"
 stages:
   - metadata
   - extract
@@ -10,18 +11,30 @@ before_script:
   - mkdir -p artifacts artifacts/content tmp
 
 # ANCHORS =================================================
+.cache_setup_template: &setup_shared_cache
+  cache:
+    key: shared
+    paths:
+      - "extractor"
+      - "thirdparty/googleplayapi/gpapi/"
+
 .compile_gpapi_template: &compile_gpapi |
-  pip install -r requirements.txt
-  cd thirdparty/googleplayapi
-  python setup.py build
-  cd ../..
+  if [ ! -f thirdparty/googleplayapi/gpapi/googleplay_pb2.py ]; then
+    pip install -r requirements.txt
+    cd thirdparty/googleplayapi
+    python setup.py build
+    cd ../..
+  fi
 
 .download_extractor_template: &download_extractor_binary |
-  curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
-  chmod +x extractor
+  if [ ! -f extractor ]; then
+    curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
+    chmod +x extractor
+  fi
 
 .chunk_job_template: &chunk_job_definition
   stage: extract
+  <<: *setup_shared_cache
   artifacts:
     paths:
       - "artifacts/VERSION"
@@ -38,6 +51,7 @@ get version code:
   artifacts:
     paths:
       - "artifacts/VERSION"
+  <<: *setup_shared_cache
   script:
     - *compile_gpapi
     - python pull-version-info.py artifacts/VERSION
