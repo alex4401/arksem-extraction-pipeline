@@ -2,51 +2,78 @@ image: registry.gitlab.com/alex4401/arkse-mobile-extraction
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 stages:
+  - metadata
   - extract
+  - web
 
 before_script:
-  - pip install -r requirements.txt
-  - cd thirdparty/googleplayapi
-  - python setup.py build
-  - cd ../..
-  - mkdir artifacts tmp
-  - curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
-  - chmod +x extractor
+  - mkdir artifacts artifacts/content tmp
 
-blob:main:
+# ANCHORS =================================================
+.compile_gpapi_template: &compile_gpapi |
+  pip install -r requirements.txt
+  cd thirdparty/googleplayapi
+  python setup.py build
+  cd ../..
+
+.download_extractor_template: &download_extractor_binary |
+  curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
+  chmod +x extractor
+
+.chunk_job_template: &chunk_job_definition
   stage: extract
   artifacts:
     paths:
+      - "artifacts/VERSION"
       - "artifacts/*.txt"
       - "artifacts/json/"
       - "artifacts/json_dirty/"
+      - "artifacts/json_dinostats/"
+  dependencies:
+    - metadata
+
+# STAGE: METADATA =========================================
+get version code:
+  stage: metadata
   script:
-    - python pull-blobs.py main
+    - *compile_gpapi
+    - python pull-version-info.py artifacts/VERSION
+
+# STAGE: EXTRACT ==========================================
+main chunk:
+  <<: *chunk_job_definition
+  script:
+    - *compile_gpapi
+    - *download_extractor_binary
+    - python pull-blobs.py main `cat artifacts/VERSION`
     - cd tmp
     - unzip ../main.*.blob "ShooterGame/Content/Paks/pakchunk0-Android.pak"
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -List > ../artifacts/chunk0-filelist.txt
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk0-filelist.txt
-    - mkdir content
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -Extract $PWD/content > /dev/null
     - cd ..
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
 
-blob:patch:
-  stage: extract
-  artifacts:
-    paths:
-      - "artifacts/*.txt"
-      - "artifacts/json/"
-      - "artifacts/json_dinostats/"
+patch chunk:
+  <<: *chunk_job_definition
   script:
-    - python pull-blobs.py patch
+    - *compile_gpapi
+    - *download_extractor_binary
+    - python pull-blobs.py patch `cat artifacts/VERSION`
     - cd tmp
     - unzip ../patch.*.blob "ShooterGame/Content/Paks/pakchunk1-Android.pak"
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -List > ../artifacts/chunk1-filelist.txt
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk1-filelist.txt
-    - mkdir content
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -Extract $PWD/content > /dev/null
     - cd ..
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
     - python runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
+
+# STAGE: WEB ==============================================
+pages:
+  stage: web
+  dependencies: 
+    - extract
+  script:
+    - echo "To be implemented."
