@@ -30,7 +30,7 @@ before_script:
       - "artifacts/json_dirty/"
       - "artifacts/json_dinostats/"
   dependencies:
-    - metadata
+    - get version code
 
 # STAGE: METADATA =========================================
 get version code:
@@ -74,6 +74,7 @@ patch chunk:
 pages:
   stage: web
   dependencies: 
-    - extract
+    - main chunk
+    - patch chunk
   script:
     - echo "To be implemented."
