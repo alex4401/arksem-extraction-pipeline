@@ -7,7 +7,7 @@ stages:
   - web
 
 before_script:
-  - mkdir artifacts artifacts/content tmp
+  - mkdir -p artifacts artifacts/content tmp
 
 # ANCHORS =================================================
 .compile_gpapi_template: &compile_gpapi |
