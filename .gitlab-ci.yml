@@ -59,7 +59,7 @@ get version code:
     - >
       if [[ "$IS_SCHEDULED_JOB" == "1" ]]; then
         if [[ `cat artifacts/VERSION` == `curl https://gitlab.com/api/v4/projects/13303998/jobs/artifacts/master/raw/artifacts/VERSION?job=get%20version%20code` ]]; then
-          curl --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" --request "DELETE" "https://gitlab.example.com/api/v4/projects/13303998/pipelines/$CI_PIPELINE_ID"
+          curl --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" --request "DELETE" "https://gitlab.com/api/v4/projects/13303998/pipelines/$CI_PIPELINE_ID"
           exit 1
         fi
         exit 0
