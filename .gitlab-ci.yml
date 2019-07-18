@@ -4,8 +4,8 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/thirdparty/pip"
 stages:
   - metadata
-  - extract
-  - web
+#  - extract
+#  - web
 
 before_script:
   - mkdir -p artifacts artifacts/content tmp
@@ -63,7 +63,7 @@ get version code:
       fi
 
 # STAGE: EXTRACT ==========================================
-main chunk:
+.main chunk:
   <<: *chunk_job_definition
   script:
     - *compile_gpapi
@@ -78,7 +78,7 @@ main chunk:
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
 #    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
 
-patch chunk:
+.patch chunk:
   <<: *chunk_job_definition
   script:
     - *compile_gpapi
@@ -94,13 +94,15 @@ patch chunk:
     - python runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
 
 # STAGE: WEB ==============================================
-pages:
-  stage: web
-  artifacts:
-    paths:
-      - "public/"
-  dependencies: 
-    - main chunk
-    - patch chunk
-  script:
-    - echo "No generation yet." > public/index.html
+#pages:
+#  stage: web
+#  variables:
+#    GIT_SUBMODULE_STRATEGY: normal
+#  artifacts:
+#    paths:
+#      - "public/"
+#  dependencies: 
+#    - main chunk
+#    - patch chunk
+#  script:
+#    - echo "No generation yet." > public/index.html
