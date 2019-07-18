@@ -4,7 +4,7 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/thirdparty/pip"
 stages:
   - metadata
-#  - extract
+  - extract
 #  - web
 
 before_script:
