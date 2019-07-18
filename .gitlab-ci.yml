@@ -35,6 +35,9 @@ before_script:
 # STAGE: METADATA =========================================
 get version code:
   stage: metadata
+  artifacts:
+    paths:
+      - "artifacts/VERSION"
   script:
     - *compile_gpapi
     - python pull-version-info.py artifacts/VERSION
