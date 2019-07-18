@@ -56,6 +56,10 @@ get version code:
   script:
     - *compile_gpapi
     - python pull-version-info.py artifacts/VERSION
+    - >
+      if [ "$IS_SCHEDULED_JOB" == "1" ]; then
+        
+      fi
 
 # STAGE: EXTRACT ==========================================
 main chunk:
