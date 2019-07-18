@@ -57,8 +57,9 @@ get version code:
     - *compile_gpapi
     - python pull-version-info.py artifacts/VERSION
     - >
-      if [ "$IS_SCHEDULED_JOB" == "1" ]; then
-        
+      if [[ "$IS_SCHEDULED_JOB" == "1" ]]; then
+        echo "not implemented"
+        exit 1
       fi
 
 # STAGE: EXTRACT ==========================================
