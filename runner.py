@@ -3,7 +3,7 @@ import sys, os, re, subprocess
 
 basePath = sys.argv[1]
 file_test = re.compile(sys.argv[2])
-cleanupjson = re.compile(sys.argv[4]) == "true"
+cleanupjson = sys.argv[4] == "true"
 
 print("Search path:", basePath)
 print("Regex:", sys.argv[2])
@@ -56,9 +56,10 @@ for uasset_path in uassets:
         final_json_path = final_dir + "/" + uasset_name + ".json"
         if not os.path.exists(final_dir):
             os.makedirs(final_dir)
-        #os.rename(json_path, final_json_path)
         if cleanupjson:
             subprocess.Popen(['python', './json-cleanup.py', json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        else:
+            os.rename(json_path, final_json_path)
     else:
         print("-")
         uassets[uasset_path].result = ERunResultType.FAIL
