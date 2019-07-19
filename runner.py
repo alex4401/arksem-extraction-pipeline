@@ -56,9 +56,9 @@ for uasset_path in uassets:
         final_json_path = final_dir + "/" + uasset_name + ".json"
         if not os.path.exists(final_dir):
             os.makedirs(final_dir)
-        os.rename(json_path, final_json_path)
+        #os.rename(json_path, final_json_path)
         if cleanupjson:
-            subprocess.Popen(['python', './json-cleanup.py', final_json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.Popen(['python', './json-cleanup.py', json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     else:
         print("-")
         uassets[uasset_path].result = ERunResultType.FAIL
