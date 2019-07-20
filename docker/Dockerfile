@@ -8,5 +8,3 @@ RUN pip install --user --no-cache-dir protobuf &&\
     rm -rf /var/cache/apk/* &&\
     rm /requirements.txt &&\
     touch /requirements.installed
-
-CMD ["/bin/bash"]
