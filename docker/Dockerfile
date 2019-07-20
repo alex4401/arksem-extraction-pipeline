@@ -8,5 +8,6 @@ RUN pip install --user --no-cache-dir protobuf &&\
     rm -rf /var/cache/apk/* &&\
     rm /requirements.txt &&\
     touch /requirements.installed
+RUN rm /bin/sh && ln -sn /bin/bash /bin/sh
 
-ENTRYPOINT ["/usr/bin/dumb-init", "bash"]
+ENTRYPOINT ["/usr/bin/dumb-init", "bash", "-l", "-c"]
