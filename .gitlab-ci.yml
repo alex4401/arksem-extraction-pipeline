@@ -1,7 +1,6 @@
 image: registry.gitlab.com/alex4401/arkse-mobile-extraction
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/thirdparty/pip"
 stages:
   - metadata
   - extract
@@ -17,10 +16,8 @@ before_script:
     paths:
       - "extractor"
       - "thirdparty/googleplayapi/gpapi/"
-      - "thirdparty/pip/"
 
 .compile_gpapi_template: &compile_gpapi |
-  pip install -r requirements.txt
   if [ ! -f thirdparty/googleplayapi/gpapi/googleplay_pb2.py ]; then
     cd thirdparty/googleplayapi
     python setup.py build
