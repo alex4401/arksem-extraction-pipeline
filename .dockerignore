@@ -1,0 +1,15 @@
+# Artifacts
+/*.bin
+/*.blob
+/tmp/
+
+# Scripts
+/*.sh
+/*.py
+
+# Thirdparty
+/thirdparty/
+
+# Git
+/README.md
+/.git/
