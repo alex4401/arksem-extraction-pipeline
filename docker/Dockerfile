@@ -1,13 +1,6 @@
-FROM jfloff/alpine-python:3.7-slim
-RUN apk add unzip protobuf \
-            py3-requests py3-cryptography &&\
-    rm -rf /var/cache/apk/*
+FROM archlinux/base
 
-ADD requirements.txt /requirements.txt
-RUN pip install --user --no-cache-dir protobuf &&\
-    rm -rf /var/cache/apk/* &&\
-    rm /requirements.txt &&\
-    touch /requirements.installed
-RUN rm /bin/sh && ln -sn /bin/bash /bin/sh
-
-ENTRYPOINT ["/usr/bin/dumb-init", "bash", "-l", "-c"]
+RUN pacman -Sy --noconfirm unzip python protobuf \
+                           python-cryptography python-protobuf \
+                           python-requests &&\
+    pacman -Scc --noconfirm
