@@ -20,7 +20,7 @@ before_script:
 .compile_gpapi_template: &compile_gpapi |
   if [ ! -f thirdparty/googleplayapi/gpapi/googleplay_pb2.py ]; then
     cd thirdparty/googleplayapi
-    python setup.py build
+    python3 setup.py build
     cd ../..
   fi
 
@@ -52,7 +52,7 @@ get version code:
   <<: *setup_shared_cache
   script:
     - *compile_gpapi
-    - python pull-version-info.py artifacts/VERSION
+    - python3 pull-version-info.py artifacts/VERSION
     - >
       if [[ "$IS_SCHEDULED_JOB" == "1" ]]; then
         if [[ `cat artifacts/VERSION` == `curl https://gitlab.com/api/v4/projects/13303998/jobs/artifacts/master/raw/artifacts/VERSION?job=get%20version%20code` ]]; then
@@ -68,14 +68,14 @@ main chunk:
   script:
     - *compile_gpapi
     - *download_extractor_binary
-    - python pull-blobs.py main `cat artifacts/VERSION`
+    - python3 pull-blobs.py main `cat artifacts/VERSION`
     - cd tmp
     - unzip ../main.*.blob "ShooterGame/Content/Paks/pakchunk0-Android.pak"
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -List > ../artifacts/chunk0-filelist.txt
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk0-filelist.txt
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -Extract $PWD/content > /dev/null
     - cd ..
-    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
+    - python3 runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
 #    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
 
 patch chunk:
@@ -83,15 +83,15 @@ patch chunk:
   script:
     - *compile_gpapi
     - *download_extractor_binary
-    - python pull-blobs.py patch `cat artifacts/VERSION`
+    - python3 pull-blobs.py patch `cat artifacts/VERSION`
     - cd tmp
     - unzip ../patch.*.blob "ShooterGame/Content/Paks/pakchunk1-Android.pak"
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -List > ../artifacts/chunk1-filelist.txt
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk1-filelist.txt
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -Extract $PWD/content > /dev/null
     - cd ..
-    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
-    - python runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
+    - python3 runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
+    - python3 runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
 
 # STAGE: WEB ==============================================
 #pages:
