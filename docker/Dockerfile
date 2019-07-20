@@ -6,4 +6,5 @@ RUN apk add unzip protobuf \
 ADD requirements.txt /requirements.txt
 RUN pip install --user --no-cache-dir protobuf &&\
     rm -rf /var/cache/apk/* &&\
-    rm /requirements.txt
+    rm /requirements.txt &&\
+    touch /requirements.installed
