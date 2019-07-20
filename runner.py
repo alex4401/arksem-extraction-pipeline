@@ -57,7 +57,7 @@ for uasset_path in uassets:
         if not os.path.exists(final_dir):
             os.makedirs(final_dir)
         if cleanupjson:
-            subprocess.Popen(['python', './json-cleanup.py', json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.Popen(['python3', './json-cleanup.py', json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         else:
             os.rename(json_path, final_json_path)
     else:
