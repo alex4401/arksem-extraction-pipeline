@@ -26,7 +26,7 @@ before_script:
 
 .download_extractor_template: &download_extractor_binary |
   if [ ! -f extractor ]; then
-    curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/master/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
+    curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/$EXTRACTOR_BRANCH/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
     chmod +x extractor
   fi
 
