@@ -30,16 +30,16 @@ before_script:
     chmod +x extractor
   fi
 
-.chunk_job_template: &chunk_job_definition
+.chunk_job_template:
+  extends: cache_setup_template
   stage: extract
-  <<: *setup_shared_cache
+  cache:
+    policy: pull
   artifacts:
     paths:
       - "artifacts/VERSION"
       - "artifacts/*.txt"
       - "artifacts/json/"
-      - "artifacts/json_dirty/"
-      - "artifacts/json_dinostats/"
   dependencies:
     - get version code
 
@@ -61,10 +61,13 @@ get version code:
         fi
         exit 0
       fi
+    # Warm up cache so the extractor is available immediately
+    # in further stages.
+    - *download_extractor_template
 
 # STAGE: EXTRACT ==========================================
 main chunk:
-  <<: *chunk_job_definition
+  extends: .chunk_job_template
   script:
     - *compile_gpapi
     - *download_extractor_binary
@@ -81,7 +84,7 @@ main chunk:
 #    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
 
 patch chunk:
-  <<: *chunk_job_definition
+  extends: .chunk_job_template
   script:
     - *compile_gpapi
     - *download_extractor_binary
