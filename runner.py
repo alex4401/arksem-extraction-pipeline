@@ -18,8 +18,9 @@ class SAssetFileData:
         self.result = ERunResultType.PENDING
         self.dirpath = path
         self.filename = filename
-        self.clean_filename = filename.replace(".uasset", "")
+        self.clean_filename = filename.replace(".uasset", "").replace(".umap", "")
         self.clean_path = os.sep.join([self.dirpath, self.clean_filename])
+        self.is_umap = ".umap" in filename
 
 uassets = {}
 
@@ -42,11 +43,12 @@ for uasset_path in uassets:
     uasset_info = uassets[uasset_path]
     current = current + 1
     uasset_name = uasset_info.filename
+    file_type = "umap" if uasset_info.is_umap else "asset"
     print("[", str(current).rjust(amount_str_length), " / ", amount, "] ",
           uasset_name.ljust(50),
           sep="", end="")
     
-    process = subprocess.Popen(['./extractor', "serialize", uasset_info.clean_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    process = subprocess.Popen(['./extractor', "serialize", file_type, uasset_info.clean_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     code = process.wait()
     json_path = uasset_info.clean_path + ".json"
     if os.path.exists(json_path):
