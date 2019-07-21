@@ -43,7 +43,7 @@ for uasset_path in uassets:
     uasset_info = uassets[uasset_path]
     current = current + 1
     uasset_name = uasset_info.filename
-    file_type = "umap" if uasset_info.is_umap else "asset"
+    file_type = "map" if uasset_info.is_umap else "asset"
     print("[", str(current).rjust(amount_str_length), " / ", amount, "] ",
           uasset_name.ljust(50),
           sep="", end="")
