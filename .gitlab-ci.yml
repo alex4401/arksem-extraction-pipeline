@@ -75,6 +75,7 @@ main chunk:
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk0-filelist.txt
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk0-Android.pak" -Extract $PWD/content
     - rm -r content/Engine
+    - find content/ -type d -name "Animations" -exec rm -rv {} +
     - cd ..
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
 #    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
@@ -90,6 +91,7 @@ patch chunk:
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -List > ../artifacts/chunk1-filelist.txt
     - bash ../clean-up-unrealpak-output.sh ../artifacts/chunk1-filelist.txt
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -Extract $PWD/content
+    - find content/ -type d -name "Animations" -exec rm -rv {} +
     - cd ..
     - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json true
 #    - python runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
