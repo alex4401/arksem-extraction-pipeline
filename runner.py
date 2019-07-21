@@ -37,6 +37,7 @@ print("Scanned", scannedCount, "and found", amount, "applicable items.")
 print("Extracting data from detected assets")
 current = 0
 amount_str_length = len(str(amount))
+subs = []
 for uasset_path in uassets:
     uasset_info = uassets[uasset_path]
     current = current + 1
@@ -45,8 +46,7 @@ for uasset_path in uassets:
           uasset_name.ljust(50),
           sep="", end="")
     
-    process = subprocess.Popen(['./extractor', "serialize", uasset_info.clean_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
+    process = subprocess.Popen(['./extractor', "serialize", uasset_info.clean_path])
     code = process.wait()
     json_path = uasset_info.clean_path + ".json"
     if os.path.exists(json_path):
@@ -57,12 +57,16 @@ for uasset_path in uassets:
         if not os.path.exists(final_dir):
             os.makedirs(final_dir)
         if cleanupjson:
-            subprocess.Popen(['python', './json-cleanup.py', json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subs.append(subprocess.Popen(['python', './json-cleanup.py', json_path, final_json_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
         else:
             os.rename(json_path, final_json_path)
     else:
         print("-")
         uassets[uasset_path].result = ERunResultType.FAIL
+
+print("Waiting until subprocesses end their work...")
+for proc in subs:
+    proc.wait()
 
 results = uassets.values()
 print(len(results), "tasks finished -",
