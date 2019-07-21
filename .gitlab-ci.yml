@@ -31,7 +31,7 @@ before_script:
   fi
 
 .chunk_job_template:
-  extends: cache_setup_template
+  extends: .cache_setup_template
   stage: extract
   cache:
     policy: pull
@@ -63,7 +63,7 @@ get version code:
       fi
     # Warm up cache so the extractor is available immediately
     # in further stages.
-    - *download_extractor_template
+    - *download_extractor_binary
 
 # STAGE: EXTRACT ==========================================
 main chunk:
