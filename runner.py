@@ -10,6 +10,7 @@ print("Regex:", sys.argv[2])
 
 class ERunResultType:
     PENDING = object()
+    RUNNING = object()
     SUCCESS = object()
     FAIL = object()
 
@@ -21,6 +22,7 @@ class SAssetFileData:
         self.clean_filename = filename.replace(".uasset", "").replace(".umap", "")
         self.clean_path = os.sep.join([self.dirpath, self.clean_filename])
         self.is_umap = ".umap" in filename
+        self.process = None
 
 uassets = {}
 
@@ -35,24 +37,37 @@ for (dirpath, dirnames, filenames) in os.walk(basePath):
 amount = len(uassets.keys())
 print("Scanned", scannedCount, "and found", amount, "applicable items.")
 
-print("Extracting data from detected assets")
+print("Starting data extraction processes for found items")
 current = 0
 amount_str_length = len(str(amount))
-subs = []
 for uasset_path in uassets:
     uasset_info = uassets[uasset_path]
     current = current + 1
     uasset_name = uasset_info.filename
     file_type = "map" if uasset_info.is_umap else "asset"
-    print("[", str(current).rjust(amount_str_length), " / ", amount, "] ",
-          uasset_name.ljust(50),
-          sep="", end="")
     
     process = subprocess.Popen(['./extractor', "serialize", file_type, uasset_info.clean_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    code = process.wait()
+    uassets[uasset_path].process = process
+    uassets[uasset_path].result = ERunResultType.RUNNING
+
+print("Waiting for extraction processes to end their work...")
+subs = []
+current = 0
+for uasset_path in uassets:
+    uasset_info = uassets[uasset_path]
+    current = current + 1
+    print("[", str(current).rjust(amount_str_length), " / ", amount, "] ",
+          uasset_info.filename.ljust(50),
+          sep="", end="")
+    
+    if uasset_info.process == None:
+        print("missing process")
+        continue
+    
+    process.wait()
     json_path = uasset_info.clean_path + ".json"
     if os.path.exists(json_path):
-        print("+")
+        print("done")
         uassets[uasset_path].result = ERunResultType.SUCCESS
         final_dir = sys.argv[3] + "/" + uasset_info.dirpath.replace(basePath, "")
         final_json_path = final_dir + "/" + uasset_name + ".json"
@@ -63,7 +78,7 @@ for uasset_path in uassets:
         else:
             os.rename(json_path, final_json_path)
     else:
-        print("-")
+        print("failed")
         uassets[uasset_path].result = ERunResultType.FAIL
 
 print("Waiting until subprocesses end their work...")
