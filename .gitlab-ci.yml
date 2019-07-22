@@ -80,7 +80,7 @@ main chunk:
     - rm -r content/Engine
     - find content/ -type d -name "Animations" -exec rm -rv {} +
     - cd ..
-    - python runner.py tmp/content "^(?!M|T\_)(.*)\.uasset$" artifacts/json true
+    - python runner.py tmp/content "^(?!(SM)|M|T\_)(.*)\.uasset$" artifacts/json true
     - python runner.py tmp/content "^(.*)\.umap$" artifacts/json true
 #    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
 
@@ -97,8 +97,7 @@ patch chunk:
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -Extract $PWD/content
     - find content/ -type d -name "Animations" -exec rm -rv {} +
     - cd ..
-    - python runner.py tmp/content "^(?!M|T\_)(.*)\.uasset$" artifacts/json true
-    - python runner.py tmp/content "^(.*)\.umap$" artifacts/json true
+    - python runner.py tmp/content "^(?!(SM)|M|T\_)(.*)\.uasset$" artifacts/json true
 #    - python runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
 
 # STAGE: WEB ==============================================
