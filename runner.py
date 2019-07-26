@@ -53,7 +53,7 @@ for uasset_path in uassets:
         "--asset",
         uasset_info.clean_path + ".uasset",
         "--uexp",
-        uasset_info.clean_path + ".uasset",
+        uasset_info.clean_path + ".uexp",
         "--output",
         uasset_info.clean_path + ".json",
         "--pkgver",
