@@ -64,9 +64,6 @@ get version code:
     # Warm up cache so the extractor is available immediately
     # in further stages.
     - *download_extractor_binary
-    # Check whether external binaries run in this environment.
-    - ./extractor --help > /dev/null
-    - ./thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin > /dev/null
 
 # STAGE: EXTRACT ==========================================
 main chunk:
