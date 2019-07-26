@@ -48,7 +48,18 @@ for uasset_path in uassets:
           uasset_name.ljust(50),
           sep="", end="")
     
-    process = subprocess.Popen(['./extractor', "serialize", file_type, uasset_info.clean_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    process = subprocess.Popen([
+        './extractor',
+        "--asset",
+        uasset_info.clean_path + ".uasset",
+        "--uexp",
+        uasset_info.clean_path + ".uasset",
+        "--output",
+        uasset_info.clean_path + ".json",
+        "--pkgver",
+        "513",
+        "extract"
+    ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     code = process.wait()
     json_path = uasset_info.clean_path + ".json"
     if os.path.exists(json_path):
