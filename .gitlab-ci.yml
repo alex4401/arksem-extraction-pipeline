@@ -14,7 +14,7 @@ before_script:
   cache:
     key: shared
     paths:
-      - "extractor"
+      - "ude-tool"
       - "thirdparty/googleplayapi/gpapi/"
 
 .compile_gpapi_template: &compile_gpapi |
@@ -25,9 +25,9 @@ before_script:
   fi
 
 .download_extractor_template: &download_extractor_binary |
-  if [ ! -f extractor ]; then
-    curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/$EXTRACTOR_BRANCH/raw/target/debug/uasset-data-extractor?job=build" --output "extractor"
-    chmod +x extractor
+  if [ ! -f ude-tool ]; then
+    curl "https://gitlab.com/api/v4/projects/13304753/jobs/artifacts/$EXTRACTOR_BRANCH/raw/target/debug/uasset-data-extractor?job=build" --output "ude-tool"
+    chmod +x ude-tool
   fi
 
 .chunk_job_template:
@@ -80,9 +80,7 @@ main chunk:
     - rm -r content/Engine
     - find content/ -type d -name "Animations" -exec rm -rv {} +
     - cd ..
-    - python runner.py tmp/content "^(?!(SM)|M|T\_)(.*)\.uasset$" artifacts/json true
-    - python runner.py tmp/content "^(.*)\.umap$" artifacts/json true
-#    - python runner.py tmp/content "^(.*)\.uasset$" artifacts/json_dirty false
+    - python runnerconfig.py tmp/content
 
 patch chunk:
   extends: .chunk_job_template
@@ -97,8 +95,7 @@ patch chunk:
     - ../thirdparty/ue4build/Engine/Binaries/Linux/UnrealPak-Linux-Debug.bin "ShooterGame/Content/Paks/pakchunk1-Android.pak" -Extract $PWD/content
     - find content/ -type d -name "Animations" -exec rm -rv {} +
     - cd ..
-    - python runner.py tmp/content "^(?!(SM)|M|T\_)(.*)\.uasset$" artifacts/json true
-#    - python runner.py tmp/content "^DinoCharacterStatusComponent(.*)\.uasset$" artifacts/json_dinostats false
+    - python runnerconfig.py tmp/content
 
 # STAGE: WEB ==============================================
 #pages:
