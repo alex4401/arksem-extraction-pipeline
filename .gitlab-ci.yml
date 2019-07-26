@@ -7,7 +7,7 @@ stages:
 #  - web
 
 before_script:
-  - mkdir -p artifacts artifacts/content tmp
+  - mkdir -p artifacts tmp
 
 # ANCHORS =================================================
 .cache_setup_template: &setup_shared_cache
