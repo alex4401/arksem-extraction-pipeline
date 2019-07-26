@@ -1,3 +1,4 @@
+/ude-tool
 /*.bin
-/tmp
 /*.blob
+/tmp/
