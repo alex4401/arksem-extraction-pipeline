@@ -23,6 +23,7 @@ ENV PYTHON_PATH=/usr/local/bin/ \
       bash \
       ca-certificates \
       protobuf \
+      curl \
     " \
     # PACKAGES needed to built python
     PYTHON_BUILD_PACKAGES="\
