@@ -59,9 +59,6 @@ get version code:
         fi
         exit 0
       fi
-    # Warm up cache so the extractor is available immediately
-    # in further stages.
-    - *download_extractor_binary
 
 # STAGE: EXTRACT ==========================================
 main chunk:
