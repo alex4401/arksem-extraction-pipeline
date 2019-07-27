@@ -1,4 +1,4 @@
-image: registry.gitlab.com/alex4401/arkse-mobile-extraction:slim
+image: registry.gitlab.com/alex4401/arkse-mobile-extraction
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 stages:
