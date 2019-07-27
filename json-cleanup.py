@@ -3,7 +3,9 @@ import json
 from collections import OrderedDict
 
 IGNORED_EMPTY_PROPERTIES = [
-    "BoolProperty", "ObjectProperty", "FloatProperty", "Function"
+    "BoolProperty", "ObjectProperty", "FloatProperty", "Function",
+    "ArrayProperty", "AssetClassProperty", "DoubleProperty", "IntProperty",
+    "StructProperty", "StrProperty", "ClassProperty"
 ]
 
 def make_unique(key, dct):
