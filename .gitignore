@@ -3,3 +3,4 @@ __pycache__
 /*.bin
 /*.blob
 /tmp/
+/nogit_*
