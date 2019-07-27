@@ -36,4 +36,4 @@ discover([
     .cast_as(Asset, EAssetType.MAP, selector=r"^(.*)\.umap$") \
     .run_process_for_each(get_extractor_command, max_simultaneous=12) \
     .filter(delete_failed_assets) \
-    .run_process_for_each(get_cleaning_command, max_simultaneous=12)
+    .run_process_for_each(get_cleaning_command, max_simultaneous=8)
