@@ -40,9 +40,7 @@ print("Found", len(npc_zone_managers), "NPC zones")
 for zone_manager in npc_zone_managers:
     body_id = int(zone_manager["BrushComponent"])
     brush = ZoneData.find_export_by_id(body_id)
-    vertex_1 = brush["AggGeom"]["ConvexElems"][0]["VertexData"][0]
-    vertex_x = vertex_1["x"]
-    vertex_y = vertex_1["y"]
+    box_bounds = brush["AggGeom"]["ConvexElems"][0]["ElemBox"]
     if not "zones" in zone_manager:
         print("Invalid zone:", zone_manager["export_id"])
         continue
@@ -57,10 +55,10 @@ for zone_manager in npc_zone_managers:
         if not container_name in zone_infos.keys():
             zone_infos[container_name] = []
 
-        location_start = geo_coords_scale.make(vertex_x + brush_location["x"], \
-                                               vertex_y + brush_location["y"]).to_dict()
-        location_end = geo_coords_scale.make(abs(vertex_x) + brush_location["x"], \
-                                             abs(vertex_y) + brush_location["y"]).to_dict()
+        location_start = geo_coords_scale.make(box_bounds["min"]["x"] + brush_location["x"], \
+                                               box_bounds["min"]["y"] + brush_location["y"]).to_dict()
+        location_end = geo_coords_scale.make(abs(box_bounds["max"]["x"]) + brush_location["x"], \
+                                             abs(box_bounds["max"]["y"]) + brush_location["y"]).to_dict()
         spawn_location_start = geo_coords_scale.make(volume_bounds["min"]["x"], volume_bounds["min"]["y"]).to_dict()
         spawn_location_end = geo_coords_scale.make(volume_bounds["max"]["x"], volume_bounds["max"]["y"]).to_dict()
     
