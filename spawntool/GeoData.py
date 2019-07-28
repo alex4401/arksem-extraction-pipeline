@@ -9,7 +9,7 @@ class GeoCoords:
         self.x_centimeters = x
         self.y_centimeters = y
         self.latitude = normal_x / scale.latitude_mult
-        self.longitude = normal_x / scale.latitude_mult
+        self.longitude = normal_y / scale.latitude_mult
     
     def to_dict(self):
         return {
