@@ -76,6 +76,7 @@ main chunk:
     - find content/ -type d -name "Animations" -exec rm -rv {} +
     - cd ..
     - python runnerconfig.py tmp/content
+    - python get-spawnzone-data.py artifacts/ShooterGame/Content/Maps/TheIslandSubMapsMobile/M_TheIsland.json artifacts/ShooterGame/Content/Maps/TheIslandSubMapsMobile/M_PersistentGameplaySublevel_DinoSpawns.json artifacts/TheIsland_DinoSpawns.json
 
 patch chunk:
   extends: .chunk_job_template
