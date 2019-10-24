@@ -1,6 +1,3 @@
 [submodule "thirdparty/googleplayapi"]
 	path = thirdparty/googleplayapi
 	url = https://github.com/NoMore201/googleplay-api.git
-[submodule "thirdparty/ue4build"]
-	path = thirdparty/ue4build
-	url = ../upakbuild.git
