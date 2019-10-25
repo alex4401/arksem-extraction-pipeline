@@ -1,4 +1,0 @@
-# GooglePlay API
-cryptography>=2.2
-protobuf>=3.5.2
-requests
