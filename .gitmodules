@@ -1,3 +1,5 @@
 [submodule "thirdparty/googleplayapi"]
 	path = thirdparty/googleplayapi
 	url = https://github.com/NoMore201/googleplay-api.git
+[submodule "thirdparty/upakpy"]
+	url = https://github.com/alex4401/upakpy.git
