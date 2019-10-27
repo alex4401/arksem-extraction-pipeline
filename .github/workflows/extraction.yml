@@ -22,23 +22,30 @@ jobs:
     - uses: actions/checkout@v1
     - name: Initialize submodules
       run: git submodule update --init --recursive
+    # Protobuf
+    - name: Download protobuf
+      run: curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.9.2/protobuf-all-3.9.2.tar.gz && tar xzvf protobuf-all-3.9.2.tar.gz
+    - name: Install protobuf
+      run: cd protobuf-3.9.2 && ./configure DIST_LANG=cpp --prefix=/usr && make && sudo make install && sudo ldconfig
+    # Python setup
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
     - name: Install dependencies
       run: |
-        apt-get install protobuf
         python -m pip install --upgrade pip
         pip install pipenv
         pipenv install --deploy --system
         cd thirdparty/googleplayapi
         python setup.py build
         cd ../..
+    # Extractor setup
     - name: Download an extractor binary
       run: |
         bash download-extractor.sh $EXTRACTOR_BRANCH ude.bin
         chmod +x ude.bin
+    # Actual extraction
     - name: Pull version data from Google Play
       env: # Or as an environment variable
         gsfDeviceId: ${{ secrets.GsfFakeDeviceId }}
