@@ -6,8 +6,8 @@ on:
   issues:
     types: [ opened ]
   push:
-    branches:    
-    - live
+    #branches:    
+    #- live
   schedule:
     - cron:  '0 * * * *'
 
