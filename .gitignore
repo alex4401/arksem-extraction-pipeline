@@ -1,4 +1,6 @@
 *.pak
+*.bin
+.env
 tmp/
 
 # Python profiling output

@@ -3,6 +3,8 @@ name: Mobile ARK data extraction
 on:
   check_suite:
     types: [ rerequested, requested ]
+  issues:
+    types: [ opened ]
   push:
     branches:    
     - live
