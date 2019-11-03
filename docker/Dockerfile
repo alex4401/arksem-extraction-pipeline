@@ -39,7 +39,7 @@ RUN apk add --no-cache $PACKAGES && \
     rm -rf /var/cache/apk/*
 RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates   && \
     pip3 install --no-cache-dir cryptography protobuf requests              && \
-    apk del --no-cache --purge .build-deps                                  && \
+    apk del --no-cache --purge .build-dependencies                                  && \
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/usr/bin/dumb-init", "bash", "-l", "-c"]
