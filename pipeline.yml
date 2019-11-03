@@ -17,6 +17,11 @@ steps:
   - cd docker
   - docker build --tag "arksem/build-environment" -f Dockerfile .
 
+volumes:
+- name: docker_socket
+  host:
+    path: /var/run/docker.sock
+
 #---
 #
 #kind: pipeline
