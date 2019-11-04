@@ -8,7 +8,7 @@ platform:
 
 steps:
 # Temporary until a registry is set up.
-- name: build on host
+- name: Build on host
   image: docker:latest
   volumes:
   - name: docker_socket
@@ -22,18 +22,29 @@ volumes:
   host:
     path: /var/run/docker.sock
 
-#---
-#
-#kind: pipeline
-#type: docker
-#name: Data Extraction
-#
-#platform:
-#  os: linux
-#  arch: arm
-#
-#steps:
-#- name: 
-#  image: python:3.5.8-slim-stretch
-#  commands:
-#  - echo Hello world!
+---
+
+kind: pipeline
+type: docker
+name: Data Extraction
+depends_on:
+- Build Environment Image
+
+platform:
+  os: linux
+  arch: arm
+
+steps:
+- name: Download tools
+  image: arksem/build-environment
+  environment:
+    UDE_VERSION: 2.4.3.1
+  commands:
+  - bash download-extractor.sh "/job_shared/"
+  volumes:
+    - name: shared
+      path: /job_shared
+
+volumes:
+- name: shared
+  temp: {}
