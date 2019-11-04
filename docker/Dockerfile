@@ -7,7 +7,7 @@ ENV PACKAGES="\
       protobuf \
       curl \
     "
-ENV PYTHON_BUILD_PACKAGES="\
+ENV BUILD_PACKAGES="\
       bzip2-dev \
       coreutils \
       dpkg-dev dpkg \
@@ -37,7 +37,7 @@ ENV PYTHON_BUILD_PACKAGES="\
 
 RUN apk add --no-cache $PACKAGES && \
     rm -rf /var/cache/apk/*
-RUN apk add --no-cache --virtual=.build-dependencies wget ca-certificates   && \
+RUN apk add --no-cache --virtual=.build-dependencies $BUILD_PACKAGES wget ca-certificates   && \
     pip3 install --no-cache-dir cryptography protobuf requests              && \
     apk del --no-cache --purge .build-dependencies                                  && \
     rm -rf /var/cache/apk/*
