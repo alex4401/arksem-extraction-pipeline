@@ -16,7 +16,7 @@ steps:
   commands:
   - cd docker
   - docker build --tag "docker.pkg.github.com/alex4401/arksem-extraction-pipeline/build-environment" -f Dockerfile .
-  - docker login docker.pkg.github.com --username $DOCKER_REGISTRY_USER_NAME --password $DOCKER_REGISTRY_TOKEN
+  - echo $DOCKER_REGISTRY_TOKEN | docker login docker.pkg.github.com --username $DOCKER_REGISTRY_USER_NAME --password-stdin
   - docker push docker.pkg.github.com/alex4401/arksem-extraction-pipeline/build-environment
 
 volumes:
