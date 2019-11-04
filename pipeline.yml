@@ -10,6 +10,9 @@ steps:
 # Temporary until a registry is set up.
 - name: Build on host
   image: docker:latest
+  volumes:
+  - name: docker_socket
+    path: /var/run/docker.sock
   commands:
   - cd docker
   - docker build --tag "docker.pkg.github.com/alex4401/arksem-extraction-pipeline/build-environment" -f Dockerfile .
