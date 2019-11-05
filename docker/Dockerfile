@@ -4,8 +4,9 @@ ENV PACKAGES="\
       dumb-init \
       bash \
       ca-certificates \
-      protobuf \
       curl \
+      git \
+      protobuf \
     "
 ENV MODULES="\
       cryptography \
