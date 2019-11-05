@@ -46,6 +46,7 @@ platform:
 steps:
 - name: Download tools
   image: docker.pkg.github.com/alex4401/arksem-extraction-pipeline/build-environment
+  pull: if-not-exists
   environment:
     UDE_VERSION: 2.4.3.1
   commands:
