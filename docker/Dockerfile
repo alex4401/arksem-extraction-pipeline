@@ -7,6 +7,11 @@ ENV PACKAGES="\
       protobuf \
       curl \
     "
+ENV MODULES="\
+      cryptography \
+      protobuf \
+      requests \
+    "
 ENV BUILD_PACKAGES="\
       bzip2-dev \
       coreutils \
@@ -37,9 +42,10 @@ ENV BUILD_PACKAGES="\
 
 RUN apk add --no-cache $PACKAGES && \
     rm -rf /var/cache/apk/*
-RUN apk add --no-cache --virtual=.build-dependencies $BUILD_PACKAGES wget ca-certificates   && \
-    pip3 install --no-cache-dir cryptography protobuf requests              && \
-    apk del --no-cache --purge .build-dependencies                                  && \
+RUN apk add --no-cache --virtual=.build-dependencies $BUILD_PACKAGES \
+                                                     wget ca-certificates && \
+    pip3 install --no-cache-dir $MODULES                                  && \
+    apk del --no-cache --purge .build-dependencies                        && \
     rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/usr/bin/dumb-init", "bash", "-l", "-c"]

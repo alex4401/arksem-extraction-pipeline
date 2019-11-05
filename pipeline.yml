@@ -44,17 +44,70 @@ platform:
   arch: arm
 
 steps:
-- name: Download tools
+- name: Download UDE
   image: docker.pkg.github.com/alex4401/arksem-extraction-pipeline/build-environment
   pull: if-not-exists
   environment:
     UDE_VERSION: 2.4.3.1
+
   commands:
-  - bash download-extractor.sh "/job_shared/"
+  # Download UDE to the shared directory.
+  - bash ci_scripts/download-extractor.sh "/job_shared/"
+  
   volumes:
-    - name: shared
-      path: /job_shared
+  - name: shared
+    path: /job_shared
+
+- name: Set up Google Play API library
+  image: docker.pkg.github.com/alex4401/arksem-extraction-pipeline/build-environment
+  pull: if-not-exists
+  # Build the library and move it to the shared directory.
+  commands:
+  - if [[ -d /job_shared/lib_gpapi ]]; then
+      echo "Library is already compiled in the cache."
+      exit 0
+    fi
+  - cd thirdparty/googleplayapi
+  - python setup.py build
+  - cd ../..
+  - mv thirdparty/googleplayapi /job_shared/lib_gpapi
+
+  volumes:
+  - name: shared
+    path: /job_shared
+
+- name: Fetch version from Google Play
+  image: docker.pkg.github.com/alex4401/arksem-extraction-pipeline/build-environment
+  pull: if-not-exists
+  # Fetch information about the APK from Google Play.
+  environment:
+    gsfDeviceCodename:
+      from_secret: GSF_DEVICE_CODENAME
+    gsfDeviceId:
+      from_secret: GSF_DEVICE_ID
+    gsfAuthToken:
+      from_secret: GSF_AUTH_TOKEN
+  commands:
+  - bash ci_scripts/link_cache.sh
+  - python gptool/pull-version-info.py > /ram/APK_VERSION
+  - if [[ `cat /ram/APK_VERSION` == `cat /job_shared/LAST_APK_VERSION` ]]; then
+      echo "No need to update the data."
+      exit 0
+    fi
+  # Update the file on the persistent storage.
+  - mv /ram/APK_VERSION /job_shared/LAST_APK_VERSION
+
+  volumes:
+  - name: ramdisk
+    path: /ram
+  - name: shared
+    path: /job_shared
 
 volumes:
 - name: shared
-  temp: {}
+  #temp: {}
+  host:
+    path: /caches/arksem
+- name: ramdisk
+  temp:
+    medium: memory

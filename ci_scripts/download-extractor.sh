@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ -f "$1/UDE_VERSION" && -f "$1/ude-debug.arm" ]
+if [[ -f "$1/UDE_VERSION" && -f "$1/ude-debug.arm" ]]
 then
-    if [ `cat "$1/UDE_VERSION"` == $UDE_VERSION ]
+    if [[ `cat "$1/UDE_VERSION"` == $UDE_VERSION ]]
     then
         echo "No need to download the extractor: v$UDE_VERSION is already present at the location."
         exit 0
