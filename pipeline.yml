@@ -63,10 +63,7 @@ steps:
   pull: if-not-exists
   # Build the library and move it to the shared directory.
   commands:
-  - if [[ -d /job_shared/lib_gpapi ]]; then
-      echo "Library is already compiled in the cache."
-      exit 0
-    fi
+  - bash ci_scripts/check_in_cache.sh libgpapi && exit 0 || true
   - cd thirdparty/googleplayapi
   - python setup.py build
   - cd ../..
@@ -90,12 +87,8 @@ steps:
   commands:
   - bash ci_scripts/link_cache.sh
   - python gptool/pull-version-info.py > /ram/APK_VERSION
-  - if [[ `cat /ram/APK_VERSION` == `cat /job_shared/LAST_APK_VERSION` ]]; then
-      echo "No need to update the data."
-      exit 0
-    fi
-  # Update the file on the persistent storage.
-  - mv /ram/APK_VERSION /job_shared/LAST_APK_VERSION
+  # Update the file on the persistent storage.\
+  - bash ci_scripts/update-local-version.sh
 
   volumes:
   - name: ramdisk
