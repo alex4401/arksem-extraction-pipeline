@@ -63,12 +63,7 @@ steps:
   pull: if-not-exists
   # Build the library and move it to the shared directory.
   commands:
-  - git submodule update --init thirdparty/googleplayapi
-  - bash ci_scripts/check_in_cache.sh libgpapi && exit 0 || true
-  - cd thirdparty/googleplayapi
-  - python setup.py build
-  - cd ../..
-  - mv thirdparty/googleplayapi /job_shared/lib_gpapi
+  - bash ci_scripts/install-libgpapi.sh
 
   volumes:
   - name: shared
