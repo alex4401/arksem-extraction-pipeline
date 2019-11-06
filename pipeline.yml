@@ -81,7 +81,7 @@ steps:
     gsfAuthToken:
       from_secret: GSF_AUTH_TOKEN
   commands:
-  - bash ci_scripts/link_cache.sh
+  - bash ci_scripts/link-cache.sh
   - python gptool/pull-version-info.py > /ram/APK_VERSION
   # Update the file on the persistent storage.\
   - bash ci_scripts/update-local-version.sh
