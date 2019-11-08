@@ -13,7 +13,7 @@ on:
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       gpAppPackageName: com.studiowildcard.wardrumstudios.ark
       EXTRACTOR_BRANCH: master
@@ -21,35 +21,26 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Initialize submodules
-      run: git submodule update --init --recursive
-    # Protobuf
-    - name: Download protobuf
-      run: curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.9.2/protobuf-all-3.9.2.tar.gz && tar xzvf protobuf-all-3.9.2.tar.gz
-    - name: Install protobuf
-      run: cd protobuf-3.9.2 && ./configure DIST_LANG=cpp --prefix=/usr && make && sudo make install && sudo ldconfig
-    # Python setup
+      run: git submodule update --init thirdparty/upakpy
+
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
-    - name: Install dependencies
+
+    - name: Install GPAPI library
       run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install --deploy --system
-        cd thirdparty/googleplayapi
-        python setup.py build
-        cd ../..
+        bash ci_scripts/install-libgpapi.sh /caches/arksem
+        bash ci_scripts/link-cache.sh
+
     # Extractor setup
-    - name: Download an extractor binary
-      run: |
-        bash download-extractor.sh $EXTRACTOR_BRANCH ude.bin
-        chmod +x ude.bin
+    - name: Download a build of the extractor
+      run: bash ci_scripts/download-extractor.sh /caches/arksem/
     # Actual extraction
-    - name: Pull version data from Google Play
-      env: # Or as an environment variable
-        gsfDeviceId: ${{ secrets.GsfFakeDeviceId }}
-        gsfDeviceCodename: ${{ secrets.GsfFakeDeviceType }}
-        gsfAuthToken: ${{ secrets.GsfAuthToken }}
-      run: |
-        python gptool/pull-version-info.py
+    #- name: Pull version data from Google Play
+    #  env: # Or as an environment variable
+    #    gsfDeviceId: ${{ secrets.GsfFakeDeviceId }}
+    #    gsfDeviceCodename: ${{ secrets.GsfFakeDeviceType }}
+    #    gsfAuthToken: ${{ secrets.GsfAuthToken }}
+    #  run: |
+    #    python gptool/pull-version-info.py
