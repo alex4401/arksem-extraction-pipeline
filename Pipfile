@@ -9,7 +9,7 @@ yapf = "~=0.28.0"
 mypy = "!=0.740"
 
 [packages]
-cryptography = "~=2.2"
+cryptography = "~=3.2"
 protobuf = "~=3.5.2"
 requests = "~=2.22.0"
 
